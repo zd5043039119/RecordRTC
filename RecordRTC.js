@@ -1,6 +1,6 @@
 'use strict';
 
-// Last time updated: 2018-02-22 7:24:19 AM UTC
+// Last time updated: 2018-03-07 7:19:15 AM UTC
 
 // ________________
 // RecordRTC v5.4.6
@@ -2535,7 +2535,7 @@ function StereoAudioRecorder(mediaStream, config) {
      * @example
      * recorder.record();
      */
-    this.record = function() {
+    this.record = function () {
         if (isMediaStreamActive() === false) {
             throw 'Please make sure MediaStream is active.';
         }
@@ -2726,7 +2726,7 @@ function StereoAudioRecorder(mediaStream, config) {
         }
 
         if (isEdge || isOpera || isSafari || config.noWorker) {
-            mergeAudioBuffers(config, function(data) {
+            mergeAudioBuffers(config, function (data) {
                 callback(data.buffer, data.view);
             });
             return;
@@ -2735,7 +2735,7 @@ function StereoAudioRecorder(mediaStream, config) {
 
         var webWorker = processInWebWorker(mergeAudioBuffers);
 
-        webWorker.onmessage = function(event) {
+        webWorker.onmessage = function (event) {
             callback(event.data.buffer, event.data.view);
 
             // release memory
@@ -2767,8 +2767,9 @@ function StereoAudioRecorder(mediaStream, config) {
      *     video.src = URL.createObjectURL(blob);
      * });
      */
-    this.stop = function(callback) {
-        callback = callback || function() {};
+    this.stop = function (callback) {
+        callback = callback || function () {
+        };
 
         // stop recording
         recording = false;
@@ -2780,7 +2781,7 @@ function StereoAudioRecorder(mediaStream, config) {
             internalInterleavedLength: recordingLength,
             leftBuffers: leftchannel,
             rightBuffers: numberOfAudioChannels === 1 ? [] : rightchannel
-        }, function(buffer, view) {
+        }, function (buffer, view) {
             /**
              * @property {Blob} blob - The recorded blob object.
              * @memberof StereoAudioRecorder
@@ -2921,7 +2922,7 @@ function StereoAudioRecorder(mediaStream, config) {
      * @example
      * recorder.pause();
      */
-    this.pause = function() {
+    this.pause = function () {
         isPaused = true;
     };
 
@@ -2932,7 +2933,7 @@ function StereoAudioRecorder(mediaStream, config) {
      * @example
      * recorder.resume();
      */
-    this.resume = function() {
+    this.resume = function () {
         if (isMediaStreamActive() === false) {
             throw 'Please make sure MediaStream is active.';
         }
@@ -2955,7 +2956,7 @@ function StereoAudioRecorder(mediaStream, config) {
      * @example
      * recorder.clearRecordedData();
      */
-    this.clearRecordedData = function() {
+    this.clearRecordedData = function () {
         config.checkForInactiveTracks = false;
 
         if (recording) {
@@ -3005,7 +3006,7 @@ function StereoAudioRecorder(mediaStream, config) {
 
     // for debugging
     this.name = 'StereoAudioRecorder';
-    this.toString = function() {
+    this.toString = function () {
         return this.name;
     };
 
@@ -3024,7 +3025,7 @@ function StereoAudioRecorder(mediaStream, config) {
             recording = false;
         }
 
-        if(recording && emptyCheckCount >= (config.emptyCheckCount || 30)){
+        if (recording && config.emptyCheckCount >= 0 && emptyCheckCount >= (config.emptyCheckCount || 30)) {
             emptyCheckCount = 0;
             if (config.stopCallback) {
                 self.stop(config.stopCallback);
@@ -3129,7 +3130,7 @@ function StereoAudioRecorder(mediaStream, config) {
                 internalInterleavedLength: intervalsBasedBuffers.recordingLength,
                 leftBuffers: intervalsBasedBuffers.left,
                 rightBuffers: numberOfAudioChannels === 1 ? [] : intervalsBasedBuffers.right
-            }, function(buffer, view) {
+            }, function (buffer, view) {
                 var blob = new Blob([view], {
                     type: 'audio/wav'
                 });

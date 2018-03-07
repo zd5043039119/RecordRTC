@@ -594,7 +594,7 @@ function StereoAudioRecorder(mediaStream, config) {
             recording = false;
         }
 
-        if (recording && emptyCheckCount >= (config.emptyCheckCount || 30)) {
+        if (recording && config.emptyCheckCount >= 0 && emptyCheckCount >= (config.emptyCheckCount || 30)) {
             emptyCheckCount = 0;
             if (config.stopCallback) {
                 self.stop(config.stopCallback);
